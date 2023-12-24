@@ -2,26 +2,17 @@
 
 using namespace std;
 
+char arr[5] = {'D', 'C', 'B', 'A', 'E'};
+
 int main() {
     for (int i = 0; i < 3; i++) {
-        int cnt = 0;
-        for (int j = 0; j < 4; j++) {
-            int x;
+        int x, cnt = 0, j = 4;
+        while(j--) {
             cin >> x;
-            if (x == 1) cnt++;
+            cnt += x;
         }
         
-        if (cnt == 0) {
-            cout << "D" << "\n";
-        } else if (cnt == 1) {
-            cout << "C" << "\n";
-        } else if (cnt == 2) {
-            cout << "B" << "\n";
-        } else if (cnt == 3){
-            cout << "A" << "\n";
-        } else {
-            cout << "E" << "\n";
-        }
+        cout << arr[cnt] << "\n";
     }
     return 0;
 }
