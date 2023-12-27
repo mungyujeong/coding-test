@@ -1,12 +1,11 @@
 #include <iostream>
 #include <stack>
-#include <vector>
 
 using namespace std;
 
-int n, answer;
+int n;
 stack<int> stk;
-vector<char> v;
+string answer;
 
 int main() {
     ios_base::sync_with_stdio(0);
@@ -19,34 +18,19 @@ int main() {
     for (int i = 0; i < n; i++) {
         int x;
         cin >> x;
-        
-        if (stk.empty()) {
-            while (idx <= x) {
-                stk.push(idx++);
-                v.push_back('+');
-            }
-        }
 
-        else if (x > stk.top()) {
-            while (idx <= x) {
-                stk.push(idx++);
-                v.push_back('+');
-            }
-        }
-        
-        if (x == stk.top()) {
-            stk.pop();
-            v.push_back('-');
-        }
-        else {
+        while (idx <= x) {
+            stk.push(idx++);
+            answer += "+\n";
+        }   
+
+        if (stk.top() != x) {
             cout << "NO\n";
-            is_valid = false;
-            break;
+            return 0;
         }
+        stk.pop();
+        answer += "-\n";
     }
 
-    if (is_valid) {
-        for (auto i : v) 
-            cout << i << '\n';
-    }
+    cout << answer;
 }
