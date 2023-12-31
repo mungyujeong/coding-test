@@ -8,11 +8,8 @@ using namespace std;
 
 int n;
 int board[MAX_N + 1][MAX_N + 1];
-int nested_board[MAX_N + 1][MAX_N + 1];
 int visited[MAX_N  + 1][MAX_N + 1];
-int nested_visited[MAX_N + 1][MAX_N + 1];
 queue<pair<int, int>> Q;
-queue<pair<int, int>> NQ;
 int dx[4] = {1, -1, 0, 0};
 int dy[4] = {0, 0, 1, -1};
 
@@ -34,42 +31,7 @@ void bfs(int color, int sx, int sy) {
     }
 }
 
-void nested_bfs(int color, int sx, int sy) {
-    NQ.push({sx, sy});
-    nested_visited[sx][sy] = 1;
-    while (!NQ.empty()) {
-        int x, y;
-        tie(x, y) = NQ.front(); NQ.pop();
-        for (int d = 0; d < 4; d++) {
-            int nx = x + dx[d];
-            int ny = y + dy[d];
-            if (nx < 0 || ny < 0 || nx >= n || ny >= n) continue;
-            if (nested_board[nx][ny] != color || nested_visited[nx][ny]) continue;
-            NQ.push({nx, ny});
-            nested_visited[nx][ny] = 1;
-        }
-    }
-}
-
-int main() {
-    cin >> n;
-    for (int i = 0; i < n ; i++) {
-        string str;
-        cin >> str;
-        for (int j = 0; j < str.size(); j++) {
-            if (str[j] == 'R') {
-                board[i][j] = 1;
-                nested_board[i][j] = 1;
-            } else if (str[j] == 'G') {
-                board[i][j] = 2;
-                nested_board[i][j] = 1;
-            } else {
-                board[i][j] = 3;
-                nested_board[i][j] = 3;
-            }
-        }
-    }
-
+int area() {
     int cnt = 0;
 
     for (int i = 0; i < n; i++) {
@@ -80,16 +42,38 @@ int main() {
             }
         }
     }
-    cout << cnt << ' ';
 
-    cnt = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            if (!nested_visited[i][j]) {
-                nested_bfs(nested_board[i][j], i, j);
-                cnt++;
+    return cnt;
+}
+
+int main() {
+    cin >> n;
+    for (int i = 0; i < n ; i++) {
+        string str;
+        cin >> str;
+        for (int j = 0; j < str.size(); j++) {
+            if (str[j] == 'R') {
+                board[i][j] = 1;
+            } else if (str[j] == 'G') {
+                board[i][j] = 2;
+            } else {
+                board[i][j] = 3;
             }
         }
     }
-    cout << cnt;
+
+    int not_g = area();
+
+    for (int i = 0; i < n; i++) 
+        fill(visited[i], visited[i] + n, 0);
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i][j] == 2)
+                board[i][j] = 1;
+        }
+    }
+
+    int is_g = area();
+    cout << not_g << " " << is_g;
 }
