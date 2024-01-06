@@ -1,70 +1,65 @@
-#include<iostream>
-#include<vector>
-#include<queue>
+#include <iostream>
+#include <queue>
+#include <tuple>
+#include <climits>
+
+#define MAX_N 1000
 
 using namespace std;
 
-int dx[4] = { -1, 1, 0, 0 };
-int dy[4] = { 0, 0, -1, 1 };
-int maze[1000][1000][2];
+int n, m;
+int board[MAX_N + 1][MAX_N + 1][2];
+queue<tuple<int, int, int>> Q;
+int answer = INT_MAX;
+int dx[] = {1, -1, 0, 0};
+int dy[] = {0, 0, 1, -1};
+int x, y, broken;
+char c;
 
-int BFS(int N, int M)
-{
-    queue<pair<int, pair<int, int>>> q;
-    q.push({ 0, { 0, 0 } });
-    while (!q.empty())
-    {
-        int broken = q.front().first;
-        int x = q.front().second.first;
-        int y = q.front().second.second;
-        q.pop();
-
-        if (x == N - 1 && y == M - 1)
-            return maze[N - 1][M - 1][broken] + 1;
-
-        for (int i = 0; i < 4; i++)
-        {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx < 0 || nx >= N || ny < 0 || ny >= M)
-                continue;
-            if (maze[nx][ny][0] == 1)
-            {
-                if(!broken)
-                {
-                    maze[nx][ny][broken + 1] = maze[x][y][broken] + 1;
-                    q.push({ 1, { nx, ny } });
+void bfs() {
+    while (!Q.empty()) {
+        tie(x, y, broken) = Q.front(); Q.pop();
+        for (int d = 0; d < 4; d++) {
+            int nx = x + dx[d];
+            int ny = y + dy[d];
+            if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+            if (board[nx][ny][0] == 1) {
+                if (!broken) {
+                    board[nx][ny][1] = board[x][y][0] + 1;
+                    Q.push({nx, ny, 1});
                 }
             }
-            else if (maze[nx][ny][0] == 0) 
-            {
-                if (broken == 1 && maze[nx][ny][broken])
-                    continue;
-                maze[nx][ny][broken] = maze[x][y][broken] + 1;
-                q.push({ broken, { nx, ny } });
-            } 
+            else if (board[nx][ny][0] == 0) {
+                if (broken == 1 && board[nx][ny][1]) continue;
+                board[nx][ny][broken] = board[x][y][broken] + 1;
+                Q.push({nx, ny, broken});
+            }
         }
     }
-    return -1;
+
+    if (board[n - 1][m - 1][0] != 0)
+        answer = min(answer, board[n - 1][m - 1][0]);
+    if (board[n - 1][m - 1][1] != 0)
+        answer = min(answer, board[n - 1][m - 1][1]);
 }
-int main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
 
-	int N, M;
-	cin >> N >> M;
-
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < M; j++)
-        {
-            char tmp;
-            cin >> tmp;
-            maze[i][j][0] = tmp - '0';
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cin >> n >> m;
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> c;
+            board[i][j][0] = c - '0';
         }
     }
-    cout << BFS(N, M);
-	return 0;
+
+    Q.push({0, 0, 0});
+    board[0][0][0]++;
+    bfs();
+
+    // if (n == 1 && m == 1) cout << 0;
+    if (answer == INT_MAX) cout << -1;
+    else cout << answer;
 }
