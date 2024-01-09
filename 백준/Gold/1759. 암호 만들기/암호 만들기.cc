@@ -10,16 +10,8 @@ int l, c;
 char arr[MAX_N];
 vector<char> result;
 
-bool check() {
-    bool type1 = false;
-    int cnt = 0;
-    for (auto i : result) {
-        if (i == 'a' || i == 'e' || i == 'i' || i == 'o' || i == 'u')
-            type1 = true;
-        else cnt++;
-    }
-    if (type1 && cnt >= 2) return true;
-    else return false;
+bool check(char i) {
+    return (i == 'a' || i == 'e' || i == 'i' || i == 'o' || i == 'u');
 }
 
 int main() {
@@ -28,21 +20,23 @@ int main() {
     cin >> l >> c;
     for (int i = 0; i < c; i++) 
         cin >> arr[i];
-    vector<int> v(l, 0);
-    for (int i = 0; i < c - l; i++)
-        v.push_back(1);
-    
     sort(arr, arr + c);
+
+    vector<int> v(c);
+    for (int i = l; i < c; i++)
+        v[i] = 1;
+    
     do {
-        for (int i = 0; i < c; i++)
-            if (v[i] == 0)
-                result.push_back(arr[i]);
-        
-        if (check()) {
-            for (auto i : result)
-                cout << i;
-            cout << '\n';
+        string ans;
+        int cnt = 0;
+        for (int i = 0; i < c; i++) {
+            if (v[i] == 0) {
+                ans += arr[i];
+                if (check(arr[i])) cnt++;
+            }
         }
-        result.clear();
+        if (cnt >= 1 && l - cnt >= 2) 
+            cout << ans << '\n';
+
     } while (next_permutation(v.begin(), v.end()));
 }
