@@ -11,12 +11,10 @@ int w[MAX_N];
 void backtracking(int curr) {
     if (curr == n) {
         int cnt = 0;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) 
             if (s[i] <= 0) 
                 cnt++;
-            // cout << s[i] << ' ';
-        }
-        // cout << endl;
+
         answer = max(answer, cnt);
         return;
     }
@@ -40,6 +38,8 @@ void backtracking(int curr) {
 }
 
 int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     cin >> n;
     for (int i = 0; i < n; i++) 
         cin >> s[i] >> w[i];
