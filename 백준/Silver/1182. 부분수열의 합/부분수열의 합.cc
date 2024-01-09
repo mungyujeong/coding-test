@@ -1,11 +1,11 @@
 #include <iostream>
 
-#define MAX_N 30
+#define MAX_N 20
 
 using namespace std;
 
 int n, s, cnt;
-int arr[MAX_N + 1];
+int arr[MAX_N];
 
 void backtracking(int curr, int sum) {
     if (curr == n) {
