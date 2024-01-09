@@ -4,33 +4,29 @@
 
 using namespace std;
 
-int n, answer;
+int n, answer, cnt;
 int s[MAX_N];
 int w[MAX_N];
 
 void backtracking(int curr) {
     if (curr == n) {
-        int cnt = 0;
-        for (int i = 0; i < n; i++) 
-            if (s[i] <= 0) 
-                cnt++;
-
         answer = max(answer, cnt);
         return;
     }
 
-    if (s[curr] <= 0)
+    if (s[curr] <= 0 || cnt == n - 1)
         backtracking(curr + 1);
     else {
         for (int i = 0; i < n; i++) {
-            if (i == curr) continue;
-            if (s[i] <= 0) {
-                backtracking(curr + 1);
-                continue;
-            }
+            if (i == curr || s[i] <= 0) continue;
+
             s[curr] -= w[i];
             s[i] -= w[curr];
+            if (s[curr] <= 0) cnt++;
+            if (s[i] <= 0) cnt++;
             backtracking(curr + 1);
+            if (s[curr] <= 0) cnt--;
+            if (s[i] <= 0) cnt--;
             s[curr] += w[i];
             s[i] += w[curr];
         }
