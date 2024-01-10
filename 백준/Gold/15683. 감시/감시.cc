@@ -61,13 +61,6 @@ void dfs(int depth) {
                 board[nx][ny] = 7;
             }
         }
-        // cout << "==================\n";
-        // for (int i = 0; i < n; i++) {
-        //     for (int j = 0; j < m; j++) 
-        //         cout << board[i][j] << ' ';
-        //     cout << endl;
-        // }
-        // cout << "==================\n";
 
         dfs(depth + 1);
 
@@ -78,6 +71,8 @@ void dfs(int depth) {
 }
 
 int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     cin >> n >> m;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
