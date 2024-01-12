@@ -18,7 +18,7 @@ int main() {
         cin >> serial;
         int cnt = 0;
         for (int j = 0; j < serial.length(); j++)
-            if ('0' <= serial[j] && serial[j] <= '9') 
+            if (isdigit(serial[j])) 
                 cnt += serial[j] - '0';
         guitars[i] = make_tuple(serial.length(), cnt, serial);
     }
