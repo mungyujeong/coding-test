@@ -7,52 +7,25 @@
 using namespace std;
 
 int n, m;
-deque<int> a;
-deque<int> b;
-vector<int> result;
+int a[MAX_N];
+int b[MAX_N];
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
     cin >> n >> m;
-    int x;
-    for (int i = 0; i < n; i++){
-        cin >> x;
-        a.push_back(x);
-    }
-    for (int i = 0; i < m; i++) {
-        cin >> x;
-        b.push_back(x);
-    }
-    
-    int limit = n + m;
-    int ax, bx, idx = 0;
-    while (limit-- && !a.empty() && !b.empty()) {
-        ax = a.front();
-        bx = b.front();
-        if (ax > bx) {
-            result.push_back(bx);
-            b.pop_front();
-        }
-        else {
-            result.push_back(ax);
-            a.pop_front();
-        }
-    }
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
+    for (int i = 0; i < m; i++)
+        cin >> b[i];
 
-    if (a.empty() && !b.empty()) {
-        while (!b.empty()) {
-            result.push_back(b.front());
-            b.pop_front();
-        }
+    int aidx = 0;
+    int bidx = 0;
+    for (int i = 0; i < m + n; i++) {
+        if (aidx == n) cout << b[bidx++] << ' ';
+        else if (bidx == m) cout << a[aidx++] << ' ';
+        else if (a[aidx] <= b[bidx]) cout << a[aidx++] << ' ';
+        else cout << b[bidx++] << ' ';
     }
-    if (b.empty() && !a.empty()) {
-        while (!a.empty()) {
-            result.push_back(a.front());
-            a.pop_front();
-        }
-    }
-    
-    for (auto i : result)
-        cout << i << ' ';
 }
