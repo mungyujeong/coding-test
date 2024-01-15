@@ -1,5 +1,5 @@
 #include <iostream>
-#include <climits>
+#include <algorithm>
 
 #define MAX_N 1'000
 
@@ -26,9 +26,5 @@ int main() {
         d[i][2] = min(d[i - 1][0], d[i - 1][1]) + arr[i][2];
     }
 
-    int answer = INT_MAX;
-    for (int i = 0; i < 3; i++) 
-        answer = min(answer, d[n - 1][i]);       
-    
-    cout << answer;
+    cout << *min_element(d[n - 1], d[n - 1] + 3);
 }
