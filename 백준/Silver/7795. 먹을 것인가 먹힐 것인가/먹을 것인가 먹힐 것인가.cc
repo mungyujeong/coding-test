@@ -21,7 +21,6 @@ int main() {
             cin >> a[i];
         for (int i = 0; i < m; i++)
             cin >> b[i];
-        // sort(a.begin(), a.end());
         sort(b.begin(), b.end());
 
         for (int i = 0; i < a.size(); i++) {
@@ -29,22 +28,11 @@ int main() {
             int mid = 0;
             int en = b.size();
             int target = a[i];
-            bool is_find = false;
             while (st < en) {
                 mid = (st + en) / 2;
                 if (target > b[mid]) st = mid + 1;
                 else en = mid;
             }
-            // cout << "a[i]: " << a[i] << "==============\n";
-            if (is_find) {
-                while (target == b[mid] && mid > 0) {
-                    mid--;
-                }
-                // cout <<"b[mid]: " << mid << '\n';
-            }
-            // else {
-            // cout << "st, mid, en: " << st << ' ' << mid << ' ' << en << endl;
-            // }
             cnt += en;
         }
         cout << cnt << '\n';
