@@ -1,15 +1,12 @@
 #include <iostream>
 #include <algorithm>
-#include <unordered_map>
 #include <vector>
 
 #define MAX_N 1'000'000
 
 using namespace std;
 
-vector<int> x;
-vector<int> origin;
-unordered_map<int, int> m;
+vector<int> x, origin;
 int n;
 
 int main() {
@@ -21,12 +18,10 @@ int main() {
         int t;
         cin >> t;
         origin.push_back(t);
-        if (m[t] > 0) continue;
-        m[t] = 1;
         x.push_back(t);
     }
     sort(x.begin(), x.end());
-    
+    x.erase(unique(x.begin(), x.end()), x.end());
     for (int i = 0; i < n; i++) 
         cout << lower_bound(x.begin(), x.end(), origin[i]) - x.begin() << ' ';
 }
