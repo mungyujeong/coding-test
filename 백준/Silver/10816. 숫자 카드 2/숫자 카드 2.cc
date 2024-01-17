@@ -15,21 +15,14 @@ int main() {
     cin.tie(0);
 
     cin >> n;
-    for (int i = 0; i < n; i++) {
-        int x;
-        cin >> x;
-        if (mapping[x] > 0) mapping[x]++;
-        else {
-            arr[i] = x;
-            mapping[x] = 1;
-        }
-    }
+    for (int i = 0; i < n; i++) 
+        cin >> arr[i];
+    
     sort(arr, arr + n);
     cin >> m;
     for (int i = 0; i < m; i++) {
         int x;
         cin >> x;
-        if (binary_search(arr, arr + n, x)) cout << mapping[x] << ' ';
-        else cout << 0 << ' ';
+        cout << upper_bound(arr, arr + n, x) - lower_bound(arr, arr + n, x) << ' ';
     }
 }
