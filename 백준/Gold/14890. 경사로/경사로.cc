@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #define MAX_N 100
 
@@ -7,116 +8,56 @@ using namespace std;
 int n, L;
 int board[MAX_N][MAX_N];
 
+bool check(vector<int>& v) {
+    int idx = 0;
+    int cnt = 1;
+    while (idx + 1 < n) {
+        if (abs(v[idx + 1] - v[idx]) > 1) return 0;
+
+        if (v[idx] == v[idx + 1]) {
+            cnt++;
+            idx++;
+        }
+        else if (v[idx] < v[idx + 1]) {
+            if (cnt < L) return 0;
+            cnt = 1;
+            idx++;
+        }
+        else {
+            if (idx + L >= n) return 0;
+            for (int i = idx + 1; i < idx + L; i++)
+                if (v[i] != v[i + 1]) return 0;
+            idx = idx + L;
+            cnt = 0;
+        }
+    }
+
+    return 1;
+}
+
 int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     cin >> n >> L;
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
             cin >> board[i][j];
 
-    int cnt = 2 * n;
-    int cl = 0;
-    int curr = 0;
+    int answer = 0;
+
     for (int i = 0; i < n; i++) {
-        int cr = 0;
-        curr = board[i][0];
-        cl = 1;
-        for (int j = 1; j < n; j++) {
-            if (curr == board[i][j]) {
-                cl++;
-                continue;
-            }
-            else if (curr == board[i][j] + 1) {
-                int tmp = j;
-                cr = 1;
-                while (tmp + 1 < n && cr < L) {
-                    tmp++;
-                    if (board[i][tmp] == board[i][j]) cr++;
-                    else break;
-
-                    if (cr >= L) break;
-                }
-
-                if (cr >= L) {
-                    j = tmp;
-                    curr = board[i][tmp];
-                    cl = 0;
-                }
-                else {
-                    // cout << i << ", " <<  j << ": impossible\n";
-                    cnt--;
-                    break;
-                }
-            }
-            else if (curr == board[i][j] - 1) {
-                if (cl >= L) {
-                    curr = board[i][j];
-                    cl = 1;
-                }
-                else {
-                    // cout << i << ", " <<  j << ": impossible\n";
-                    cnt--;
-                    break;
-                }
-            }
-            else {
-                // cout << i << ", " <<  j << ": impossible\n";
-                cnt--;
-                break;
-            }
-        }
-        // cout << cnt << endl;
+        vector<int> line;
+        for (int j = 0; j < n; j++)
+            line.push_back(board[i][j]);
+        answer += check(line);
     }
 
-    cl = 0;
-    curr = 0;
     for (int i = 0; i < n; i++) {
-        int cr = 0;
-        curr = board[0][i];
-        cl = 1;
-        for (int j = 1; j < n; j++) {
-            if (curr == board[j][i]) {
-                cl++;
-                continue;
-            }
-            else if (curr == board[j][i] + 1) {
-                int tmp = j;
-                cr = 1;
-                while (tmp + 1 < n && cr < L) {
-                    tmp++;
-                    if (board[tmp][i] == board[j][i]) cr++;
-                    else break;
-
-                    if (cr >= L) break;
-                }
-
-                if (cr >= L) {
-                    j = tmp;
-                    curr = board[tmp][i];
-                    cl = 0;
-                }
-                else {
-                    // cout << i << ", " <<  j << ": + 1 impossible\n";
-                    cnt--;
-                    break;
-                }
-            }
-            else if (curr == board[j][i] - 1) {
-                if (cl >= L) {
-                    curr = board[j][i];
-                    cl = 1;
-                }
-                else {
-                    // cout << i << ", " <<  j << ": - 1 impossible\n";
-                    cnt--;
-                    break;
-                }
-            }
-            else {
-                // cout << i << ", " <<  j << ": else impossible\n";
-                cnt--;
-                break;
-            }
-        }
+        vector<int> line;
+        for (int j = 0; j < n; j++)
+            line.push_back(board[j][i]);
+        answer += check(line);
     }
-    cout << cnt << endl;
+
+    cout << answer;
 }
