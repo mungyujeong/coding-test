@@ -29,7 +29,7 @@ void bfs() {
             if (nx < 0 || ny < 0 || nx >= n || ny >= n) continue;
             if (board[nx][ny] == 1) continue;
             if (i == 2) {
-                if (board[nx -1][ny] == 1 || board[nx][ny - 1] == 1) continue;   
+                if (board[x][ny] == 1 || board[nx][y] == 1) continue;   
             }
             if (nx == n - 1 && ny == n - 1) {
                 answer++;
