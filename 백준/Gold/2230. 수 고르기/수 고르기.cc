@@ -18,15 +18,10 @@ int main() {
 
     int st = 1;
     int en = 1;
-
-    while (st <= n && en <= n) {
-        ll diff = arr[en] - arr[st];
-        if (diff >= m) {
-            st++;
-            answer = min(answer, diff);
-        }
-        else en++;
+    for (int st = 1; st <= n; st++) {
+        while (en <= n && arr[en] - arr[st] < m) en++;
+        if (en > n) break;
+        answer = min(answer, arr[en] - arr[st]);
     }
-
     cout << answer;
 }
