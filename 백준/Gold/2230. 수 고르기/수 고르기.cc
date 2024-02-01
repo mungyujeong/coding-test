@@ -25,9 +25,7 @@ int main() {
             st++;
             answer = min(answer, diff);
         }
-        else {
-            en++;
-        }
+        else en++;
     }
 
     cout << answer;
