@@ -21,9 +21,8 @@ int main() {
         else worker.erase(name);
     }
 
-    for (auto i : worker)
-        v.push_back(i);
-    sort(v.begin(), v.end());
-    for (int i = v.size() - 1; i >= 0; i--)
-        cout << v[i] << '\n';
+    vector<string> v(worker.begin(), worker.end());
+    sort(v.begin(), v.end(), greater<string>());
+    for (auto i : v)
+        cout << i << '\n';
 }
