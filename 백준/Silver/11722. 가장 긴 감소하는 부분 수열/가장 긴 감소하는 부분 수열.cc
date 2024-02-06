@@ -5,21 +5,27 @@
 
 using namespace std;
 
-int n, a[MAX_N], length[MAX_N];
+int n, arr[MAX_N], answer;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cin >> n;
     for (int i = 0; i < n; i++)
-        cin >> a[i];
+        cin >> arr[i];
     
+    int LIS[MAX_N] = {};
+    LIS[0] = arr[n - 1];
+    int len = 1;
+
     for (int i = n - 1; i >= 0; i--) {
-        length[i] = 1;
-        for (int j = n - 1; j > i; j--) 
-            if (a[i] > a[j]) 
-                length[i] = max(length[i], length[j] + 1);
+        if (arr[i] > LIS[len - 1]) {
+            LIS[len++] = arr[i];
+            continue;
+        }    
+        int idx = lower_bound(LIS, LIS + len, arr[i]) - LIS;
+        LIS[idx] = arr[i];
     }
 
-    cout << *max_element(length, length + n);
+    cout << len;
 }
