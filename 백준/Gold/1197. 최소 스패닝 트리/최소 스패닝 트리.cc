@@ -1,48 +1,48 @@
 #include <iostream>
 #include <vector>
+#include <tuple>
 #include <algorithm>
+
+#define MAX_N 10'000
 
 using namespace std;
 
-int v, e, a, b, cost, result{0};
-vector<pair<int, pair<int, int>>> edges;
-int parent[10001];
+int v, e, answer;
+vector<tuple<int, int, int>> edge;
+vector<int> parent(MAX_N, -1);
 
-int findParent(int x)
-{
-    if (x == parent[x]) return x;
-    return parent[x] = findParent(parent[x]);
+int find(int x) {
+    if (parent[x] < 0) return x;
+    return parent[x] = find(parent[x]);
 }
 
-void unionParent(int a, int b)
-{
-    a = findParent(a);
-    b = findParent(b);
-    if (a < b) parent[b] = a;
+bool is_diff_group(int a, int b) {
+    a = find(a);
+    b = find(b);
+    if (a == b) return false;
+    if (parent[a] == parent[b]) parent[a]--;
+    if (parent[a] < parent[b]) parent[b] = a;
     else parent[a] = b;
+    return true;
 }
 
-int main()
-{
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
     cin >> v >> e;
-    for (auto i = 1; i <= v; i++) {
-        parent[i] = i;
+    for (int i = 0; i < e; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        edge.push_back({c, a, b});
     }
-    for (auto i = 0; i < e; i++) {
-        cin >> a >> b >> cost;
-        edges.push_back({cost, {a, b}});
+    sort(edge.begin(), edge.end());
+
+    for (int i = 0; i < e; i++) {
+        int a, b, cost;
+        tie(cost, a, b) = edge[i];
+        if (!is_diff_group(a, b)) continue;
+        answer += cost;
     }
 
-    sort(edges.begin(), edges.end());
-
-    for (auto& i : edges) {
-        cost = i.first;
-        a = i.second.first;
-        b = i.second.second;
-        if (findParent(a) != findParent(b)) {
-            unionParent(a, b);
-            result += cost;
-        }
-    }
-    cout << result << endl;
+    cout << answer;
 }
