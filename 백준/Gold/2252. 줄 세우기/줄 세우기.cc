@@ -1,42 +1,38 @@
 #include <iostream>
-#include <vector>
 #include <queue>
+#include <vector>
 
 #define MAX_N 32'001
 
 using namespace std;
 
-int n, m, deg[MAX_N];
+int n, m, topology[MAX_N];
 vector<int> adj[MAX_N];
-vector<int> result;
+queue<int> Q;
 
 int main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
-    cin >> n >> m;
 
+    cin >> n >> m;
     for (int i = 0; i < m; i++) {
         int a, b;
         cin >> a >> b;
         adj[a].push_back(b);
-        deg[b]++;
+        topology[b]++;
     }
 
-    queue<int> Q;
-    for (int i = 1; i <= n; i++) 
-        if (deg[i] == 0) 
+    for (int i = 1; i <= n; i++)
+        if (topology[i] == 0)
             Q.push(i);
     
-    while(!Q.empty()) {
+    while (!Q.empty()) {
         int cur = Q.front(); Q.pop();
-        result.push_back(cur);
+        cout << cur << ' ';
         for (auto nxt : adj[cur]) {
-            deg[nxt]--;
-            if (deg[nxt] == 0) Q.push(nxt);
+            topology[nxt]--;
+            if (topology[nxt] == 0)
+                Q.push(nxt);
         }
-    }
-
-    for (auto i : result) {
-        cout << i << ' ';
     }
 }
