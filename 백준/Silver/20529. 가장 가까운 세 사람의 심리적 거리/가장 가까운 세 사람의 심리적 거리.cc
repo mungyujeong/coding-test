@@ -8,11 +8,10 @@ using namespace std;
 
 int test_case, n;
 
-int diff(string a, string b) {
+int diff(string a, string b, string c) {
     int cnt = 0;
     for (int i = 0; i < 4; i++)
-        if (a[i] != b[i]) 
-            cnt++;
+        cnt += (a[i] != b[i]) + (b[i] != c[i]) + (c[i] != a[i]);
     return cnt;
 }
 
@@ -39,7 +38,7 @@ int main() {
         for (int i = 0; i < sz; i++) 
             for (int j = i + 1; j < sz; j++) 
                 for (int k = j + 1; k < sz; k++) 
-                    answer = min(answer, diff(v[i], v[j]) + diff(v[i], v[k]) + diff(v[j], v[k]));
+                    answer = min(answer, diff(v[i], v[j], v[k]));
 
         cout << answer << '\n';
     }
