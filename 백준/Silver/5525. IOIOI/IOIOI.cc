@@ -3,7 +3,7 @@
 using namespace std;
 
 int n, m, answer;
-string str, io;
+string str;
 
 int main() {
     ios_base::sync_with_stdio(0);
@@ -11,18 +11,17 @@ int main() {
     
     cin >> n >> m >> str;
 
-    io = "I";
-    while (n--) {
-        io += "OI";
-    }
-
-    int sz = str.size();
-    int len = io.size();
-
-    for (int i = 0; i < sz; i++) {
-        if (i + len > sz) break;
-        if (str.substr(i, len) == io)
-            answer++;
+    for (int i = 0; i < m; i++) {
+        int k = 0;
+        if (str[i] == 'O') continue;
+        while (str[i + 1] == 'O' && str[i + 2] == 'I') {
+            k++;
+            if (k == n) {
+                answer++;
+                k--;
+            }
+            i += 2;
+        }
     }
     
     cout << answer;
