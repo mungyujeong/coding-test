@@ -1,17 +1,19 @@
 #include <iostream>
-#include <string>
 
 using namespace std;
 
-string str;
-int arr[26];
+string S;
+int cnt[26];
 
-int main(void) {
-    cin >> str;
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
 
-    for (int i = 0; i < str.size(); i++) 
-        arr[str[i] - 'a']++;
+    cin >> S;
+    for (char s : S)
+        cnt[s - 'a']++;
     
-    for (int i = 0; i < 26; i++)
-        cout << arr[i] << ' ';
+    for (int i : cnt)
+        cout << i << ' ';
 }
