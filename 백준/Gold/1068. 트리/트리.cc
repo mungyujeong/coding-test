@@ -8,29 +8,18 @@ int n, root, del_node, answer;
 vector<vector<int>> adj(51);
 vector<bool> deleted(51, false);
 
-void bfs() {
-    queue<int> q;
-    deleted[del_node] = true;
-    q.push(del_node);
+int dfs(int cur) {
+    if (cur == del_node) return 0;
+    if (adj[cur].empty()) return 1;
+    if (adj[cur].size() == 1 
+        && adj[cur].front() == del_node) return 1;
+    
+    int cnt = 0;
 
-    while (!q.empty()) {
-        int cur = q.front();
-        q.pop();
-        deleted[cur] = true;
-        for (auto nxt : adj[cur]) {
-            if (deleted[nxt]) continue;
-            deleted[nxt] = true;
-            q.push(nxt);
-        }
-    }
-}
+    for (auto nxt : adj[cur])
+        cnt += dfs(nxt);
 
-bool IsLeaf(int cur) {
-    for (auto nxt : adj[cur]) {
-        if (deleted[nxt]) continue;
-        else return false;
-    }
-    return true;
+    return cnt;
 }
 
 int main() {
@@ -46,14 +35,8 @@ int main() {
     }
 
     cin >> del_node;
-    bfs();
 
-    for (int i = 0; i < n; i++) {
-        if (deleted[i]) continue;
-        if (IsLeaf(i)) answer++;
-    }
-
-    cout << answer;
+    cout << dfs(root);
 
     return 0;
 }
